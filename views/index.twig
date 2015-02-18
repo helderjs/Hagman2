@@ -1,0 +1,25 @@
+<!-- Template by http://www.writteninpencil.de -->
+<!doctype html>
+<html lang="en" ng-app>
+    <head>
+        <title>Hagman Game</title>
+        <link href="{{ app.request.basepath }}/css/css.css" rel="stylesheet" type="text/css" />
+        <script type="application/javascript" src="{{ app.request.basepath }}/js/angular.min.js"></script>
+        <script type="application/javascript" src="{{ app.request.basepath }}/js/hangman.js"></script>
+    </head>
+    <body ng-controller="HangmanController">
+
+    <h1>Hangman</h1>
+
+    <p id="word"></p>
+
+    <form name="form">
+        <input name="character" type="text" size="5" maxlength="1">
+        <input name="guessButton" type="button" value="Guess">
+
+        <p id="wrongLetters">Wrong Letters:</p>
+        <img src="{{ app.request.basepath }}/images/hangman0.png" id="hangman"><br/>
+        <input name="refresh" type="button" value="New Game">
+    </form>
+    </body>
+</html>
