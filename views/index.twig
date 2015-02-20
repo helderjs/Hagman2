@@ -1,25 +1,27 @@
 <!-- Template by http://www.writteninpencil.de -->
 <!doctype html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="app">
     <head>
         <title>Hagman Game</title>
-        <link href="{{ app.request.basepath }}/css/css.css" rel="stylesheet" type="text/css" />
-        <script type="application/javascript" src="{{ app.request.basepath }}/js/angular.min.js"></script>
-        <script type="application/javascript" src="{{ app.request.basepath }}/js/hangman.js"></script>
+        <link href="${ app.request.basepath }/css/css.css" rel="stylesheet" type="text/css" />
+        <script type="application/javascript" src="${ app.request.basepath }/js/angular.min.js"></script>
+        <script type="application/javascript" src="${ app.request.basepath }/js/hangman.js"></script>
+        <script type="application/javascript" src="${ app.request.basepath }/js/service.js"></script>
     </head>
-    <body ng-controller="HangmanController">
+    <body ng-controller="HangmanController" data-ng-init="newGame()">
 
     <h1>Hangman</h1>
 
-    <p id="word"></p>
+    <p id="word">{{ word }}</p>
 
     <form name="form">
-        <input name="character" type="text" size="5" maxlength="1">
-        <input name="guessButton" type="button" value="Guess">
+        <input name="character" ng-model="character" type="text" size="5" maxlength="1"
+               ng-change="character=character.toUpperCase();">
+        <input name="guessButton" type="button" value="Guess" ng-click="guessButton()" ng-disabled="attempt==6">
 
-        <p id="wrongLetters">Wrong Letters:</p>
-        <img src="{{ app.request.basepath }}/images/hangman0.png" id="hangman"><br/>
-        <input name="refresh" type="button" value="New Game">
+        <p id="wrongLetters">Wrong Letters: {{ wrongChars }}</p>
+        <img src="${ app.request.basepath }/images/hangman{{ attempt }}.png" id="hangman"><br/>
+        <input name="refresh" type="button" value="New Game" ng-click="newGame()">
     </form>
     </body>
 </html>
