@@ -19,6 +19,8 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     return $twig;
 }));
 
+$app->mount('/', new \Hangman\Module());
+
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.twig');
 });
