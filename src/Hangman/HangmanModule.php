@@ -2,11 +2,11 @@
 
 namespace Hangman;
 
-use Hangman\Controller\Game;
+use Hangman\Controller\GameController;
 use Silex\ControllerProviderInterface;
 use Silex\Application;
 
-class Module implements ControllerProviderInterface
+class HangmanModule implements ControllerProviderInterface
 {
     /**
      * @inheritdoc
@@ -16,7 +16,7 @@ class Module implements ControllerProviderInterface
         // Pega o gerenciador de controllers do silex
         $routing = $app['controllers_factory'];
 
-        Game::createRoutes($routing);
+        GameController::createRoutes($routing);
 
         return $routing;
     }

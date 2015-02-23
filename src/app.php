@@ -6,6 +6,8 @@ $app = new Silex\Application();
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider());
+$app->register(new Silex\Provider\SessionServiceProvider());
+$app->register(new \Hangman\Provider\WordServiceProvider());
 
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     $lexer = new Twig_Lexer($twig, array(
@@ -19,7 +21,7 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     return $twig;
 }));
 
-$app->mount('/', new \Hangman\Module());
+$app->mount('/', new \Hangman\HangmanModule());
 
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.twig');

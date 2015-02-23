@@ -24,7 +24,6 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "mkdir var",
             "mkdir var/logs",
             "mkdir var/cache",
             "touch var/logs/silex_dev.log",
