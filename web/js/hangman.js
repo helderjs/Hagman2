@@ -1,21 +1,22 @@
 var app = angular.module('app', []);
 
 app.controller('HangmanController', ['$scope', 'HangmanService', function($scope, HangmanService) {
+    $scope.gameId = null;
     $scope.word = "";
     $scope.character = "";
-    $scope.characters = [];
     $scope.attempt = 0;
     $scope.wrongChars = "";
 
     $scope.newGame = function() {
         HangmanService.newWord().then(function(response) {
+            $scope.gameId = response.data.id;
             $scope.word = "";
             $scope.attempt = 0;
             $scope.character = "";
             $scope.characters = [];
             $scope.wrongChars = "";
 
-            for (var x = 0; x < 5; x++) {
+            for (var x = 0; x < response.data.length; x++) {
                 $scope.word += "_ ";
             }
         }, function() {
@@ -30,30 +31,32 @@ app.controller('HangmanController', ['$scope', 'HangmanService', function($scope
     });
 
     $scope.guessButton = function () {
-        if ($scope.characters.indexOf($scope.character) != -1) {
-            alert('Character is already in the list!');
-            return;
+        HangmanService.updateGame($scope.gameId, $scope.character).then(
+            function (response) {
+                $scope.updateStatus(response.data);
+            },
+            function (response) {
+                alert(response.data.message);
+            }
+        );
+    };
+
+    $scope.updateStatus = function (data) {
+        if (data.guessed) {
+            data.positions.forEach(function(value) {
+                var position = value * 2;
+                var word = $scope.word;
+                $scope.word = word.substring(0, position) + $scope.character + word.substring(position + 1);
+            });
         }
 
-        $scope.characters.push($scope.character);
-        $scope.wrong();
+        HangmanService.getStatus($scope.gameId).then(
+            function(response) {
+                $scope.attempt = 6 - response.data.tries_left;
+                $scope.wrongChars = response.data.wrong_chars.join(' ');
+            }
+        );
+
         $scope.character = "";
-
-        /*var result = HangmanService.verifyCharacter($scope.char);
-
-        if (result == false) {
-            return $scope.wrong();
-        }
-
-        return $scope.correct();*/
-    };
-
-    $scope.correct = function () {
-        alert('Correct');
-    };
-
-    $scope.wrong = function() {
-        $scope.attempt++;
-        $scope.wrongChars += $scope.character + " ";
     };
 }]);

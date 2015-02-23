@@ -1,15 +1,15 @@
 app.service('HangmanService', ["$http", function ($http) {
+    $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+
     this.newWord = function () {
-        return $http.get("/tmp");
+        return $http.post("/games");
     };
 
-    this.verifyCharacter = function (char) {
-        var result = false;
+    this.updateGame = function (id, char) {
+        return $http.post('/games/' + id, $.param({char: char}));
+    };
 
-        return $http.post('/tmp', $.param({char: char})).then(function () {
-            return result;
-        }, function () {
-            return result;
-        });
+    this.getStatus = function (id) {
+        return $http.get('/games/' + id);
     };
 }]);
